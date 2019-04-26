@@ -1,0 +1,32 @@
+RefreshBOA()
+
+' for this to work you need to have a list of the locations of all BOA files you want to refresh in column A on worksheet 1
+
+    Dim BoaLoc As String
+    Dim lResult As Variant
+    
+    ThisWorkbook.Activate
+    
+    Worksheets(1).Range("A2").Select
+    
+    Do Until ActiveCell.Value = ""
+        
+        BoaLoc = ActiveCell.Value
+        
+        Set Extwbk = Workbooks.Open(BoaLoc)
+        
+        Extwbk.Activate
+                
+        lResult = Application.Run("SAPExecuteCommand", "Refresh", "ALL")
+        
+        Extwbk.Save
+    
+        Extwbk.Close
+    
+        ThisWorkbook.Activate
+                
+        ActiveCell.Offset(1, 0).Select
+    
+    Loop
+    
+End Sub
